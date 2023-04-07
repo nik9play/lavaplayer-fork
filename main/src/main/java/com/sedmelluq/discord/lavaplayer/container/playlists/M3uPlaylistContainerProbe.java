@@ -62,6 +62,13 @@ public class M3uPlaylistContainerProbe implements MediaContainerProbe {
     log.debug("Track {} is an M3U playlist file.", reference.identifier);
     String[] lines = DataFormatTools.streamToLines(inputStream, StandardCharsets.UTF_8);
 
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].startsWith("#") || lines[i].startsWith("http://") || lines[i].startsWith(("https://")) ||
+          lines[i].startsWith("icy://")) continue;
+
+      lines[i] = reference.identifier.replace("index.m3u8", "") + lines[i];
+    }
+
     String hlsStreamUrl = HlsStreamSegmentUrlProvider.findHlsEntryUrl(lines);
 
     if (hlsStreamUrl != null) {
