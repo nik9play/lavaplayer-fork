@@ -128,9 +128,8 @@ public abstract class M3uStreamSegmentUrlProvider {
 
       if (line.isData() && streamInfoLine != null) {
         String quality = getQualityFromM3uDirective(streamInfoLine);
-        if (quality != null) {
-          streams.add(new ChannelStreamInfo(quality, line.lineData));
-        }
+        if (quality == null) quality = "default";
+        streams.add(new ChannelStreamInfo(quality, line.lineData));
 
         streamInfoLine = null;
       } else if (line.isDirective() && "EXT-X-STREAM-INF".equals(line.directiveName)) {
